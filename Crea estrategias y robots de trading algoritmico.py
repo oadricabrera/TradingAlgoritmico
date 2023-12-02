@@ -27,8 +27,28 @@ for ticker in asset:
 
 # cada ticker
 # print(precio_de_cierre.get("EURUSD=x").head())
+# guarda fecha y precio: funciona bien
 for fecha, precio in zip(
     precio_de_cierre.get("EURUSD=x").index, precio_de_cierre.get("EURUSD=x")["Open"]
 ):
     # print(f"fecha {fecha} precio {precio}")
-    print({"fecha": fecha, "precio": precio})
+    print({"fecha": fecha, "precio": precio})    
+"""
+df = pd.DataFrame(data={"Columna1":[1,2,3],
+                        "Columna2":[4,5,6],
+                        "Columna3":[7,8,9]                     
+                        },
+                        index=[2018,2019,2020]
+                        )
+
+print(df["Columna1"])
+print(df.iloc[2][2])
+df["Columna Nueva"]=[100,200,300]
+print(df)
+
+#copia de dataframe
+
+copiadf=df.copy()
+
+print(f"Compia Df: {copiadf}")
+"""
