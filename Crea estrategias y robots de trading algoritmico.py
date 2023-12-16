@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
+import conexion_robot_udemy
 
 # df = yf.download("GOOG", interval="1d", start="2023-11-01", end=None)
 
@@ -51,4 +52,34 @@ print(df)
 copiadf=df.copy()
 
 print(f"Compia Df: {copiadf}")
+"""
+
+conexion = conexion_robot_udemy()
+#print(f"Igresando al for para guardar {len(BullSpreaddDB)} registros Bulls")
+cantidad_registros = 1
+
+    
+conexion.grabar_data(query="insert into nombre_tabla(fecha_cotizacion,precio_venta) values(%s,%s)", params=[{'fecha_cotizacion':'2023-11-20 00:00:00', 'precio_venta': 1.090702772140503}])       #"insert into nombre_tabla(fecha,precio_venta) values(%s,%s)"      
+"""
+    if ((dato.get("precio_comprada_armado") != 0.0 and dato.get("precio_vendida_armado") != 0.0) or (dato.get("precio_comprada_desarme") != 0.0 and  dato.get("precio_vendida_desarme") != 0.0)):
+        armada  = conexion.seleccionar(query=SELECCIONAR_GANANCIA_ARMADA,params=(dato.get("comprada"),dato.get("lanzada"))) #Me dice si el registro está en la BD
+        desarme  = conexion.seleccionar(query=SELECCIONAR_GANANCIA_DESARME,params=(dato.get("comprada"),dato.get("lanzada")))
+        if not armada:            
+            #print(dato.get("ganancia_por_ciento_armada"),dato.get("ganancia_por_ciento_desarme"))
+            conexion.grabar_data(simulacro=False,query=INSERTAR, params=dato) #daría un error, mis parámetros están en rows línea 82
+        else:            
+            # acá actualizas el registro con los valores que obtenes de la lista de dict
+            id,armada = armada[0]
+            id,desarme = desarme[0]
+            #_id,_ganancia_por_ciento_armada,_ganancia_por_ciento_desarme=registros[0]
+            data = get_data_armada(dato)
+            if armada >= dato.get("ganancia_por_ciento_armada"):  #_ganancia_por_ciento_armada >= _data.get("ganancia_por_ciento_armada"):
+                conexion.grabar_data(query=ACTUALIZAR_ESTRATEGIA_ARMADA, params=dato) #Puede funcionar, si hay error es por falta de datos
+            data = get_data_desarme(dato)
+            data.append(id)
+            if desarme <= dato.get("ganancia_por_ciento_desarme"):
+                conexion.grabar_data(query=ACTUALIZAR_ESTRATEGIA_DESARME, params=dato) #Puede funcionar, si hay error es por falta de datos
+                            
+#print(f"Igresando al for para guardar {len(BearSpreadDB)} registros Bears")
+cantidad_registros = 
 """
