@@ -68,13 +68,13 @@ class RobotUdemy:
     #         return cant_registro
 
     def insertar_record(self, query=None, data=None):
-        self.grabar_data(query, data)
+        return self.grabar_data(query, data)
 
     def actualizar_record(self, query=None, data=None):
-        self.grabar_data(query, data)
+        return self.grabar_data(query, data)
 
     def eliminar_record(self, query=None, data=None):
-        self.grabar_data(query, data)
+        return self.grabar_data(query, data)
 
     def grabar_data(self, query=None, data=None):
         """
