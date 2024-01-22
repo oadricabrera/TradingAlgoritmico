@@ -5,10 +5,10 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 
-df=yf.download("AMZ",start="2023-10-01")
+df=yf.download("AMZN",start="2023-10-01")
 
-df["EMA12"]=df.close.ewm(span=12).mean()
-df["EMA26"]=df.close.ewm(span=26).mean()
+df["EMA12"]=df.Close.ewm(span=12).mean()
+df["EMA26"]=df.Close.ewm(span=26).mean()
 df["MACD"]=df.EMA12-df.EMA26
 df["Senal"]=df.MACD.ewm(span=9).mean()
 

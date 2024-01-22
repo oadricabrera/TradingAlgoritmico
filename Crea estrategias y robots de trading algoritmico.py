@@ -1,9 +1,11 @@
 import yfinance as yf
-import pandas as pd
-import matplotlib.pyplot as plt
-import conexion_robot_udemy
+#import pandas as pd
+#import matplotlib.pyplot as plt
+from conexion_robot_udemy import RobotUdemy,INSERT
 
-# df = yf.download("GOOG", interval="1d", start="2023-11-01", end=None)
+df = yf.download("GOOG", interval="1d", start="2023-11-01", end=None)
+
+print(df)
 
 # df=yf.download("GOOG", period="10y", interval="1d")
 
@@ -52,15 +54,20 @@ print(df)
 copiadf=df.copy()
 
 print(f"Compia Df: {copiadf}")
-"""
 
-conexion = conexion_robot_udemy()
+
+conexion = RobotUdemy()
 #print(f"Igresando al for para guardar {len(BullSpreaddDB)} registros Bulls")
 cantidad_registros = 1
+cant_insert = 0
+cant_insert += conexion.insertar_record(
+        query=INSERT,
+        data=("2023-11-20", 1.090702772140503),
+    )
 
     
 conexion.grabar_data(query="insert into nombre_tabla(fecha_cotizacion,precio_venta) values(%s,%s)", params=[{'fecha_cotizacion':'2023-11-20 00:00:00', 'precio_venta': 1.090702772140503}])       #"insert into nombre_tabla(fecha,precio_venta) values(%s,%s)"      
-"""
+
     if ((dato.get("precio_comprada_armado") != 0.0 and dato.get("precio_vendida_armado") != 0.0) or (dato.get("precio_comprada_desarme") != 0.0 and  dato.get("precio_vendida_desarme") != 0.0)):
         armada  = conexion.seleccionar(query=SELECCIONAR_GANANCIA_ARMADA,params=(dato.get("comprada"),dato.get("lanzada"))) #Me dice si el registro está en la BD
         desarme  = conexion.seleccionar(query=SELECCIONAR_GANANCIA_DESARME,params=(dato.get("comprada"),dato.get("lanzada")))

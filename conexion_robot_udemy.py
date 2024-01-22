@@ -6,7 +6,7 @@ class RobotUdemy:
     HOST = "localhost"
     USER = "root"
     PASSWORD = "1QuieroMysql"
-    DB = "bearybulldb"
+    DB = "robot_udemy"
 
     def __init__(self):
         self.connexion = pymysql.connect(
@@ -98,7 +98,7 @@ class RobotUdemy:
         finally:
             return cant_registro
 
-
+"""
 conexion_robot_udemy = RobotUdemy()
 cant_insert = 0
 for i in range(10):
@@ -108,3 +108,4 @@ for i in range(10):
     )
 
 print(f"Registros insertados {cant_insert}")
+"""
