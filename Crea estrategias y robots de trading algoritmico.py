@@ -3,9 +3,9 @@ import yfinance as yf
 #import matplotlib.pyplot as plt
 from conexion_robot_udemy import RobotUdemy,INSERT
 
-df = yf.download("GOOG", interval="1d", start="2023-11-01", end=None)
+df = yf.download("GOOG", interval="1d", start="2022-01-20", end=None)
 
-print(df)
+#print(df)
 
 # df=yf.download("GOOG", period="10y", interval="1d")
 
@@ -31,12 +31,33 @@ for ticker in asset:
 # cada ticker
 # print(precio_de_cierre.get("EURUSD=x").head())
 # guarda fecha y precio: funciona bien
+conexion_robot_udemy = RobotUdemy()
+fecha, precio = (
+    precio_de_cierre.get("EURUSD=x").index[-1],
+    precio_de_cierre.get("EURUSD=x")["Adj Close"].iloc[-1],
+)
+conexion_robot_udemy.insertar_record(
+        query=INSERT,
+        data=(fecha, precio),
+    ) 
+
+conexion_robot_udemy("SELECT fecha_cotizacion WHERE index[-1]")
+
+if conexion_robot_udemy.fecha_cotizacion == fecha:
+    print("La BD está actualizada")
+
+print(f"{conexion_robot_udemy.fecha_cotizacion},{fecha},{precio}")
+"""
 for fecha, precio in zip(
     precio_de_cierre.get("EURUSD=x").index, precio_de_cierre.get("EURUSD=x")["Open"]
 ):
     # print(f"fecha {fecha} precio {precio}")
-    print({"fecha": fecha, "precio": precio})    
-"""
+    print({"fecha": fecha, "precio": precio}) 
+    conexion_robot_udemy.insertar_record(
+        query=INSERT,
+        data=(fecha, precio),
+    )   
+
 df = pd.DataFrame(data={"Columna1":[1,2,3],
                         "Columna2":[4,5,6],
                         "Columna3":[7,8,9]                     
