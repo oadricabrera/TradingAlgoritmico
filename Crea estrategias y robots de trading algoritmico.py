@@ -1,7 +1,8 @@
 import yfinance as yf
-#import pandas as pd
-#import matplotlib.pyplot as plt
-from conexion_robot_udemy import RobotUdemy,INSERT
+
+# import pandas as pd
+# import matplotlib.pyplot as plt
+from conexion_robot_udemy import RobotUdemy, INSERT
 
 df = yf.download("GOOG", interval="1d", start="2023-11-01", end=None)
 
@@ -19,7 +20,7 @@ for ticker in asset:
     # precio_de_cierre[ticker] = yf.download(ticker, period="2y", interval="1d")[
     #     "Adj Close"
     # ]
-    precio_de_cierre.update({ticker: yf.download(ticker, period="2y", interval="1d")})
+    precio_de_cierre.update({ticker: yf.download(ticker, period="1y", interval="1d")})
 
     # precios_db[ticker] = yf.download(ticker, period="2y", interval="1d")
 
@@ -31,11 +32,19 @@ for ticker in asset:
 # cada ticker
 # print(precio_de_cierre.get("EURUSD=x").head())
 # guarda fecha y precio: funciona bien
-for fecha, precio in zip(
-    precio_de_cierre.get("EURUSD=x").index, precio_de_cierre.get("EURUSD=x")["Open"]
-):
-    # print(f"fecha {fecha} precio {precio}")
-    print({"fecha": fecha, "precio": precio})    
+fecha, precio = (
+    precio_de_cierre.get("EURUSD=x").index[-1],
+    precio_de_cierre.get("EURUSD=x")["Adj Close"].iloc[-1],
+)
+print("----> ", {"fecha": fecha, "precio": precio})
+# for i in precio:
+#     print(f"-<-< {i}")
+# for fecha, precio in zip(
+#     precio_de_cierre.get("EURUSD=x").index, precio_de_cierre.get("EURUSD=x")["Open"]
+# ):
+# print(f"fecha {fecha} precio {precio}")
+# print(precio_de_cierre.get("EURUSD=x").index[-1])
+# print({"fecha": fecha, "precio": precio})
 """
 df = pd.DataFrame(data={"Columna1":[1,2,3],
                         "Columna2":[4,5,6],
