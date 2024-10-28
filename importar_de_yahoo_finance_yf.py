@@ -1,6 +1,9 @@
 import yfinance as yf
 import pandas as pd
 import pymysql
+from dotenv import load_dotenv
+from os import getenv
+load_dotenv()
 
 SELECCIONAR = """
 SELECT * FROM yahoofinance
@@ -14,25 +17,24 @@ INSERTAR = """
             volumen = %s
     """ 
 
-class yahoofinance:
-    HOST = "localhost"
-    USER = "root"
-    PASSWORD = "1QuieroMysql"
-    DB = "yahoofinance"
+class YahooFinance:
+    HOST = getenv("HOST")
+    USER = getenv("USER")
+    PASSWORD = getenv("PASSWORD")
+    DB = getenv("DB")
 
     def __init__(self):
-        print("-----> ", yahoofinance.HOST, yahoofinance.USER)
         self.connexion = pymysql.connect(
-            host=yahoofinance.HOST,
-            user=yahoofinance.USER,
-            password=yahoofinance.PASSWORD,
-            db=yahoofinance.DB,
+            host=YahooFinance.HOST,
+            user=YahooFinance.USER,
+            password=YahooFinance.PASSWORD,
+            db=YahooFinance.DB,
             charset="utf8",
         )
         self.cursor=self.connexion.cursor()
 
 
-    def get_stock_data(self,ticker, start_date, end_date, interval='1m'):
+    def get_stock_data(self,*,ticker, start_date, end_date, interval='1m'):
         # Descarga los datos del ticker especificado
         data = yf.download(ticker, start=start_date, end=end_date, interval=interval)    
         return data
@@ -46,13 +48,14 @@ class yahoofinance:
 if __name__ == "__main__":
     # Especifica el ticker, la fecha de inicio, la fecha de finalización y el intervalo
     ticker = 'GGAL'  # Cambia esto por el ticker que desees
-    start_date = '2024-06-25'
-    end_date = '2024-07-02'
-    
+    start_date = '2024-09-07'
+    end_date = '2024-09-13'
+    print(f"{start_date},{end_date}")
     # Llama a la función para obtener los datos
-    stock_data = yahoofinance.get_stock_data(ticker, start_date, end_date)
+    conn = YahooFinance()
+    stock_data = conn.get_stock_data(ticker=ticker,start_date=start_date,end_date=end_date)
 
-    yahoofinance.guardar_data(stock_data)
+    conn.guardar_data(stock_data)
     
     # Muestra los datos obtenidos
     print(stock_data)
